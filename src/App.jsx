@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
+import Login from './components/Login';
+import Register from './components/Register'; 
+import Dashboard from './components/Dashboard';
+import './App.css';
+
+// Wrapper for routes requiring authentication
+function ProtectedRoute({ isAuth, children }) {
+  return isAuth ? children : <Navigate to="/" />;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+
+  const handleLogin = () => setIsAuthenticated(true);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <nav>
+        <Link to="/">Login</Link>{" | "}
+        <Link to="/register">Register</Link>{" | "}
+        {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Login onLogin={handleLogin} />} />
+        <Route path="/register" element={<Register onLogin={handleLogin} />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute isAuth={isAuthenticated}>
+              <Dashboard onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<div>404 – Page Not Found</div>} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
