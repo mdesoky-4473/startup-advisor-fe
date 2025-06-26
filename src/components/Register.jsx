@@ -6,7 +6,7 @@ export default function Registration({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -26,12 +26,16 @@ export default function Registration({ onLogin }) {
   };
 
   return (
-    <form onSubmit={handleRegister}>
-      <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" />
-      <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
-      <button type="submit">Register</button>
-      {message && <p>{message}</p>}
-    </form>
+
+    <div>
+       <h1>StartUp Advisor: Your AI Co-Pilot for Launch & Growth</h1>
+        <form onSubmit={handleRegister}>
+            <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" />
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
+            <button type="submit">Register</button>
+            {message && <p>{message}</p>}
+        </form>
+    </div>
   );
 }
 

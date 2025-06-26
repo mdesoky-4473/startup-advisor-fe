@@ -23,8 +23,8 @@ function App() {
     <>
       <nav>
         <Link to="/">Login</Link>{" | "}
-        <Link to="/register">Register</Link>{" | "}
-        {isAuthenticated && <Link to="/dashboard">Dashboard</Link>}
+        <Link to="/register">Register</Link>
+        {isAuthenticated && (<> {" | "} <Link to="/dashboard">Dashboard</Link> </> )} 
       </nav>
 
       <Routes>
